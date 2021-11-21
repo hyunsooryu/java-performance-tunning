@@ -1,0 +1,41 @@
+
+*여는 글*
+
+    모든 개발자들이 알면서도, 잘 지키지 않는 것이 있다. -> 바로 문자열 관련 부분
+    String 클래스는 잘 사용하면 상관이 없지만, 잘못 사용하면 메모리에 많은 영향을 끼치게 된다.
+    Sting이 GC에 영향을 주는 것은 확실. 하지만, 이것만 고친다고 해서, 개발 된 애플리케이션의 메모리가 효율적으로
+    사용된다는 것은 아님. 
+    Java 기반의 프로그래밍을 할때, java.lang.Object를 제외하고, 가장 많이 사용하는 객체가 무엇일까?
+    int, long 과 같은 Primitive Type의 데이터를 제외 하고는, String, Collections 가 될 확률이 높다.
+    
+    EX)
+
+    String strSql = "";
+    strSql += "select * ";
+    strSql += "from (";
+    strSql += "select A_column, ";
+    ...
+
+    VS
+
+    StringBuilder sb = new StringBuilder();
+    sb.append(~~);
+    sb.append(~~);
+    sb.append(~~);
+    sb.toString();
+
+    10회 평균으로 위의 경우는 메모리 사용량이 약 5MB, 응답시간이 약 5ms
+
+    반면, 아래의 경우는 메모리 사용량이 10회 평균 약 371 KB, 응답시간은 0.3ms
+
+    가 소요되었다.
+
+
+1. StringBuffer 와 StringBuilder 클래스
+
+    JDK 5.0을 기준으로 문자열을 만드는 클래스는 String, StringBuilder, StringBuffer가 가장 많이 사용되어왔다.
+    StringBuilder 클래스는 JDK 5.0에 새로 추가되었으며, StringBuilder, StringBuffer 클래느는 제공하는 메소드가 동일하다.
+    둘의 차이점은, StringBuffer 클래스는 Thread Safe하게 설계되어 있으므로, 여러 개의 스레드에서 하나의 StringBuffer 객체를 처리해도
+    전혀 문제가 되지 않는 반면, StringBuilder는 단일 스레드에서의 안전성만을 보장 받을 수 있다는 것이다. 그렇기 때문에 여러개의 스레드에서
+    하나의 StringBuilder 객체를 처리하면 문제가 발생한다.
+    
